@@ -13,6 +13,9 @@ public class DemoServerVerticle extends Verticle
 {
 
   public static final String MONITOR_DATA = "monitor";
+  public static final String WEB_RESOURCE_DIR = "src/main/resources/web/";
+  public static final String FILENAME_PARAM = "filename";
+  public static final String ZIPCODE_PARAM = "zipcode";
   private int fileServes = 0;
   private int zipCode = 0;
 
@@ -20,7 +23,7 @@ public class DemoServerVerticle extends Verticle
   public void start()
   {
     RouteMatcher routeMatcher = new RouteMatcher()
-        .get("/resource/:filename", new Handler<HttpServerRequest>()
+        .get("/resource/:"+FILENAME_PARAM, new Handler<HttpServerRequest>()
         {
           @Override
           public void handle(HttpServerRequest event)
@@ -28,7 +31,7 @@ public class DemoServerVerticle extends Verticle
             fileServe(event);
           }
         })
-        .get("/zip/:zipcode", new Handler<HttpServerRequest>()
+        .get("/zip/:" + ZIPCODE_PARAM, new Handler<HttpServerRequest>()
         {
           @Override
           public void handle(HttpServerRequest event)
@@ -60,7 +63,7 @@ public class DemoServerVerticle extends Verticle
   private void zipCode(final HttpServerRequest request)
   {
     vertx.sharedData().getMap(MONITOR_DATA).put(this.toString() + "#zipCode",++zipCode);
-    String path = request.params().get("zipcode");
+    String path = request.params().get(ZIPCODE_PARAM);
 
     JsonObject query = new JsonObject()
         .putString("action", "findone")
@@ -80,6 +83,6 @@ public class DemoServerVerticle extends Verticle
   private void fileServe(final HttpServerRequest event)
   {
     vertx.sharedData().getMap(MONITOR_DATA).put(this.toString() + "#fileServe",++fileServes);
-    event.response().sendFile("src/main/resources/web/" + event.params().get("filename"));
+    event.response().sendFile(WEB_RESOURCE_DIR + event.params().get(FILENAME_PARAM));
   }
 }
