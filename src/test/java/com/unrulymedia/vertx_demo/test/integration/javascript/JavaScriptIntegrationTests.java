@@ -1,4 +1,4 @@
-package com.mycompany.myproject.test.integration.javascript;
+package com.unrulymedia.vertx_demo.test.integration.javascript;
 /*
  * Copyright 2013 Red Hat, Inc.
  *
