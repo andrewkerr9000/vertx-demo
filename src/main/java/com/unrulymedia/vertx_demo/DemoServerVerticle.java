@@ -53,7 +53,7 @@ public class DemoServerVerticle extends Verticle
 
   private void monitor(HttpServerRequest event)
   {
-    Map monitoring = vertx.sharedData().getMap(MONITOR_DATA);
+    Map<String,Object> monitoring = vertx.sharedData().getMap(MONITOR_DATA);
     event.response().end(new JsonObject(monitoring).encode());
   }
 
