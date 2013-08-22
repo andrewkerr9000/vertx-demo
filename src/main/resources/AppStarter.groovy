@@ -8,5 +8,6 @@ def persistorConf = [
 
 container.with {
     deployModule('io.vertx~mod-mongo-persistor~2.0.0-final', persistorConf, 4)
-    deployVerticle('com.unrulymedia.vertx_demo.DemoServerVerticle', [:], 4)
+    //deployVerticle('com.unrulymedia.vertx_demo.DemoServerVerticle', [:], 3)
+    deployVerticle('DemoServerVerticle.js', [:], 1)
 }

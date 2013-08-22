@@ -49,15 +49,15 @@ public class DemoServerVerticle extends Verticle
         });
 
     vertx.createHttpServer()
-        .setAcceptBacklog(9000 + 1)
         .requestHandler(routeMatcher)
         .listen(8080);
   }
 
-  private void monitor(HttpServerRequest event)
+  private void monitor(HttpServerRequest request)
   {
     Map<String,Object> monitoring = vertx.sharedData().getMap(MONITOR_DATA);
-    event.response().end(new JsonObject(monitoring).encode());
+    request.response().putHeader("content-type", "application/json");
+    request.response().end(new JsonObject(monitoring).encode());
   }
 
   private void zipCode(final HttpServerRequest request)
@@ -80,9 +80,9 @@ public class DemoServerVerticle extends Verticle
     });
   }
 
-  private void fileServe(final HttpServerRequest event)
+  private void fileServe(final HttpServerRequest request)
   {
     vertx.sharedData().getMap(MONITOR_DATA).put(this.toString() + "#fileServe",++fileServes);
-    event.response().sendFile(WEB_RESOURCE_DIR + event.params().get(FILENAME_PARAM));
+    request.response().sendFile(WEB_RESOURCE_DIR + request.params().get(FILENAME_PARAM));
   }
 }
